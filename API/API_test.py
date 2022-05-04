@@ -1,8 +1,11 @@
 import unittest
 from API.API_interface import Roboat_API
-import argparse
+import os
+
 class Roboat_API_Test_failed(unittest.TestCase):
     def setUp(self) -> None:
+        Roboat_API.password = os.getenv('PASSWORD')
+        print(Roboat_API.password)
         self.api_caller=Roboat_API(1, 1, 1)
     def test_failed_login(self):
         self.assertEqual(self.api_caller.token, self.api_caller.INVALID_TOKEN)  # add assertion here
@@ -21,6 +24,8 @@ class Roboat_API_Test_failed(unittest.TestCase):
 
 class Roboat_API_Test_success(unittest.TestCase):
     def setUp(self) -> None:
+        Roboat_API.password=os.getenv('PASSWORD')
+        print(Roboat_API.password)
         self.api_caller=Roboat_API(531, 1, 1)
     def test_succeed_login(self):
         self.assertNotEqual(self.api_caller.token, self.api_caller.INVALID_TOKEN)
@@ -37,11 +42,3 @@ class Roboat_API_Test_success(unittest.TestCase):
                 "autoTwa": True}}]
         self.assertEqual(self.api_caller.BoatActions(TS, action)['rc'],'ok')
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser("unittest for API_interface")
-    parser.add_argument("--password", help="Password for connection", type=str)
-    args = parser.parse_args()
-    Roboat_API.password=args.password
-    runner = unittest.TextTestRunner()
-    itersuite = unittest.TestLoader().loadTestsFromTestCase(Roboat_API_Test_failed)
-    runner.run(itersuite)

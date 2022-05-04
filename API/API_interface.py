@@ -15,7 +15,7 @@ class Roboat_API:
         self.INVALID_TOKEN = 'No Token'
         self.roboats_url = 'https://roboats.virtualregatta.com/api'
         self.mail = "deepazurteam@outlook.com"
-        self.password = "4CAJHW"
+        #self.password = "4CAJHW"
 
         self.token = self.INVALID_TOKEN
         self.raceId = raceId
