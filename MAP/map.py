@@ -65,4 +65,4 @@ with open(headerName, 'rb') as f :
 
     rest=f.read()
 print(len(rest))
-#TODO : We need to uncompressed the gzip data stored in rest
+#TODO : We need to uncompressed the gzip data stored in rest.
