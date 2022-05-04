@@ -39,7 +39,9 @@ class Roboat_API_Test_success(unittest.TestCase):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser("unittest for API_interface")
-    parser.add_argument("password", help="Password for connection", type=str)
+    parser.add_argument("--password", help="Password for connection", type=str)
     args = parser.parse_args()
     Roboat_API.password=args.password
-    unittest.main()
+    runner = unittest.TextTestRunner()
+    itersuite = unittest.TestLoader().loadTestsFromTestCase(Roboat_API_Test_failed)
+    runner.run(itersuite)

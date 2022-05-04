@@ -9,8 +9,9 @@ class Roboat_API:
     roboats_url = 'https://roboats.virtualregatta.com/api'
     mail = "deepazurteam@outlook.com"
     password = "Hidden"
+    debug=False
 
-    def __init__(self,raceId=531,legNum=1,debug=False):
+    def __init__(self,raceId=531,legNum=1,debug=None):
         self.INVALID_TOKEN = 'No Token'
         self.roboats_url = 'https://roboats.virtualregatta.com/api'
         self.mail = "deepazurteam@outlook.com"
@@ -19,7 +20,8 @@ class Roboat_API:
         self.token = self.INVALID_TOKEN
         self.raceId = raceId
         self.legNum = legNum
-        self.debug=debug
+        if debug!=None :
+            self.debug=debug
 
         #------- Try to log ------
         self.login()
@@ -138,7 +140,7 @@ if __name__ == '__main__':
     #this is an attempt to hide it
 
     parser = argparse.ArgumentParser("API_interface")
-    parser.add_argument("password", help="Password for connection", type=str)
+    parser.add_argument("--password", help="Password for connection", type=str)
     args = parser.parse_args()
     Roboat_API.password=args.password
     api_caller= Roboat_API()
