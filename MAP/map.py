@@ -4,18 +4,10 @@ import requests
 import zlib
 import os
 
-def stream_gzip_decompress(stream):
-    dec = zlib.decompressobj(32 + zlib.MAX_WBITS)  # offset 32 to skip the header
-    for chunk in stream:
-        rv = dec.decompress(chunk)
-        if rv:
-            yield rv
-
 fileUrl='https://static.virtualregatta.com/ressources/maps/dalles/vro2k16/'
 resolution=1
-longitude=1
-latitude=1
-
+longitude=14
+latitude=-61
 
 tile_longitude=( resolution * math.floor(longitude / resolution))
 tile_latitude = resolution * math.ceil(latitude /resolution)
@@ -28,14 +20,20 @@ fileUrl+= resolution+'/'+longitude_folder+'/'+latitude_folder+'/'+fileName
 
 
 exempleUrl='https://static.virtualregatta.com/ressources/maps/dalles/vro2k16/1/0/4/1_-4_44.deg'
-response = requests.get(exempleUrl)
-headerName='header.def'
-open(headerName, "wb").write(response.content)
+response = requests.get(fileUrl)
+fileName='map.deg'
+open(fileName, "wb").write(response.content)
 
 
-file_size = os.path.getsize(headerName)
+file_size = os.path.getsize(fileName)
 print("File Size is :", file_size, "bytes")
-with open(headerName, 'rb') as f :
+
+"""with open(fileName,'rb') as f:
+    header=f.read(11)
+    gzbuf=f.read()
+    databuf=zlib.decompress(gzbuf,-zlib.MAX_WBITS)"""
+
+with open(fileName, 'rb') as f :
     #octet 1: version du fichier
     version =int.from_bytes( f.read(1) , "big")
 
@@ -62,7 +60,16 @@ with open(headerName, 'rb') as f :
     month= 1+ int.from_bytes(f.read(1), "big")
     day=int.from_bytes(f.read(1), "big")
 
-
     rest=f.read()
-print(len(rest))
+rest=zlib.decompress(rest,-15)
+
+import numpy as np
+data=np.frombuffer(rest,dtype=np.int8)
+data.resize((730,730))
+
+import matplotlib.pyplot as plt
+plt.figure()
+plt.imshow(data)
+plt.show()
+
 #TODO : We need to uncompressed the gzip data stored in rest.
