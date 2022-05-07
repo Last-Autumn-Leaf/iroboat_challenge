@@ -6,8 +6,8 @@ import os
 
 fileUrl='https://static.virtualregatta.com/ressources/maps/dalles/vro2k16/'
 resolution=1
-longitude=14
-latitude=-61
+longitude=0
+latitude=4
 
 tile_longitude=( resolution * math.floor(longitude / resolution))
 tile_latitude = resolution * math.ceil(latitude /resolution)
@@ -20,7 +20,7 @@ fileUrl+= resolution+'/'+longitude_folder+'/'+latitude_folder+'/'+fileName
 
 
 exempleUrl='https://static.virtualregatta.com/ressources/maps/dalles/vro2k16/1/0/4/1_-4_44.deg'
-response = requests.get(fileUrl)
+response = requests.get(exempleUrl)
 fileName='map.deg'
 open(fileName, "wb").write(response.content)
 
@@ -28,10 +28,6 @@ open(fileName, "wb").write(response.content)
 file_size = os.path.getsize(fileName)
 print("File Size is :", file_size, "bytes")
 
-"""with open(fileName,'rb') as f:
-    header=f.read(11)
-    gzbuf=f.read()
-    databuf=zlib.decompress(gzbuf,-zlib.MAX_WBITS)"""
 
 with open(fileName, 'rb') as f :
     #octet 1: version du fichier
