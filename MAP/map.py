@@ -117,7 +117,7 @@ def get_world_map(resolution=45,collisionOnly=False,debug=False):
             if collisionOnly :
                 if current_tuile.min() <0 and current_tuile.max() >=0 : # On n'enregistre que les tuiles mixtes
                     world_map[i:i+tuile_size,j:j+tuile_size]=current_tuile
-                    memory_map[ii, jj] = '1'
+                    memory_map[ii, jj] = 1
             else:
                 world_map[i:i + tuile_size, j:j + tuile_size] = current_tuile
                 if world_map[i:i+tuile_size,j:j+tuile_size].max() <0 : # que de l'eau
@@ -139,12 +139,13 @@ def get_world_map(resolution=45,collisionOnly=False,debug=False):
 
 if __name__=='__main__':
     decode_Map=True
-    resolution=6
+    resolution=1
+    collisionOnly=True
 
     if decode_Map:
-        world_map,memory_map= get_world_map(resolution,collisionOnly=True)
+        world_map,memory_map= get_world_map(resolution,collisionOnly=collisionOnly)
         # Saving :
-        fileName = 'decoded_map_5s.npy' %str(resolution)
+        fileName = 'decoded_map_%s.npy' %str(resolution)
         with open(fileName, 'wb') as f:
             np.save(f, world_map)
             np.save(f, memory_map)
@@ -162,4 +163,5 @@ def get_decoded_map(fileName = 'decoded_map.npy') :
     with open(fileName, 'rb') as f:
         world_map = np.load(f)
         memory_map = np.load(f)
+        print('map saved in ',fileName)
     return world_map,memory_map
